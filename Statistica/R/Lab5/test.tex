@@ -1,0 +1,341 @@
+\documentclass[a4paper]{extarticle}
+\usepackage[left=3cm,right=1cm,
+    top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage[final]{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{tabulary}
+\usepackage{placeins}
+\usepackage{needspace}
+\usepackage[noae]{Sweave}
+
+\author{Пахтусов Н. Г., ПРО-306}
+\makeatletter
+
+
+
+\begin{document} % Тут начинается отчет
+
+\begin{center}
+\thispagestyle{empty} 
+
+Федеральное государственное бюджетное образовательное учереждение высшего \\
+профессионального образования\\
+<<Уфимский государственный авиационный технический университет>>
+\vspace*{\fill}
+\begingroup
+\centering
+
+Отчет по лабораторной работе №5\\
+по дисциплине: <<Статистическое моделирование>>\\
+на тему: <<Временные ряды>>.
+
+\endgroup
+\vspace*{\fill}
+
+\end{center}
+
+\begin{flushright}
+
+Выполнил:\\
+\@author \\
+Проверила: \\
+Рассадникова Е. Ю.
+
+\end{flushright}
+
+\begin{center}
+Уфа, 2015 г.
+\end{center}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+\input{test-concordance}
+
+\section{Постановка задачи}
+
+В данной работе нам необходимо для некоторых временных рядов построить модель ARIMA и провести её улучшение (если это необходимо).
+
+\section{Работа с временными рядами в R}
+
+
+В базовые возможности R входят средства для представления и анализа временных рядов. Основным типом временных данных является
+<<\texttt{ts}>>, который представляет собой временной ряд, состоящий из значе-
+ний, разделенных одинаковыми интервалами времени. Временные ряды могут быть образованы и неравномерно отстоящими друг от друга значения. В этом случае следует воспользоваться специальными типами данных — zoo и its, которые становятся доступными после загрузки
+пакетов с теми же именами.
+
+Методы для анализа временных рядов и их моделирования включают ARIMA-модели, реализованные в функциях \texttt{arima()}, \texttt{AR()} и \texttt{VAR()}, структурные модели в \texttt{StructTS()}, функции автокорреляции и частной автокорреляции в \texttt{acf()} и \texttt{pacf()}, классическую декомпозицию временного ряда в \texttt{decompose()}, STL-декомпозицию в \texttt{stl()}, скользящее среднее и авторегрессивный фильтр в \texttt{filter()}.
+
+\section{Данные}
+
+В качестве исходных данных будем использовать данные о смертности в США за каждый месяц, начиная с января 1973 года и заканчивая декабрём 1978. Данные взяты с сайта https://datamarket.com/
+
+Загрузим исходные данные:
+
+\begin{Schunk}
+\begin{Sinput}
+> fram <- read.csv("/home/nick/Projects/R/Lab5/data.csv")
+\end{Sinput}
+\end{Schunk}
+
+Запишем данные в переменную \texttt{data} данные из столбца с названием \texttt{data}, укажем, что начинаем с 1 месяца 1973 года, и что всего у нас 12 месяцев:
+\begin{Schunk}
+\begin{Sinput}
+> data <- ts(fram$data,
++    start = c(1973, 1),
++    frequency = 12
++ )
+\end{Sinput}
+\begin{Soutput}
+       Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
+1973  9007  8106  8928  9137 10017 10826 11317 10744  9713  9938  9161  8927
+1974  7750  6981  8038  8422  8714  9512 10120  9823  8743  9129  8710  8680
+1975  8162  7306  8124  7870  9387  9556 10093  9620  8285  8433  8160  8034
+1976  7717  7461  7776  7925  8634  8945 10078  9179  8037  8488  7874  8647
+1977  7792  6957  7726  8106  8890  9299 10625  9302  8314  8850  8265  8796
+1978  7836  6892  7791  8129  9115  9434 10484  9827  9110  9070  8633  9240
+\end{Soutput}
+\end{Schunk}
+
+%Построим график из получившихся данных:
+
+%<<fig=TRUE>>=
+%plot(data)
+%@
+
+\section{Начальный анализ}
+
+Теперь можно приступить к анализу. 
+\subsection{Автокорреляция и периодичность}
+Применим функцию \texttt{acf} (<<auto-correlation function>>, ACF). Она выводит коэффициенты автокорреляции и рисует график автокорреляции. Чем больше палочек выходит за полоски, тем более значима периодичность.
+
+\begin{Schunk}
+\begin{Sinput}
+> acf(data, main="")
+\end{Sinput}
+\end{Schunk}
+\includegraphics{test-004}
+
+\subsection{Тренд}
+
+То, что волнообразный график пиков как бы затухает, говорит о том, что в наших данных возможен тренд. Проверим это с помощью функции \texttt{stl} (STL -- <<Seasonal Decomposition of Time Series by Loess>>), которая вычленяет из временного ряда три компоненты: сезонную (в данном случае, годовую), тренд и случайную, при помощи сглаживания данных методом LOESS.
+
+\begin{Schunk}
+\begin{Sinput}
+> plot(stl(data, s.window="periodic")$time.series, main="")
+\end{Sinput}
+\end{Schunk}
+\includegraphics{test-005}
+
+Из графика видно, что тенденция к уменьшению смертности практически не прослеживается.
+
+\subsection{Стационарность}
+
+Проверим ряд на стационарность, использовав тест Дики -- Фуллера (DF-test). В этом нам поможет функция из пакета <<\texttt{tseries}>> \texttt{adf.test}. На вход ей подаётся временной ряд, гипотеза, которую нужно проверить и периодичность (принято брать годовую, а у нас месячные данные, значит, k = 12).
+
+\begin{Schunk}
+\begin{Sinput}
+> adf.test(data, alternative="stationary", k=12)
+\end{Sinput}
+\begin{Soutput}
+	Augmented Dickey-Fuller Test
+
+data:  data
+Dickey-Fuller = -1.6502, Lag order = 12, p-value = 0.7178
+alternative hypothesis: stationary
+\end{Soutput}
+\end{Schunk}
+
+Значение p оказалось равным 0.7178. Таким образом, наш временной ряд стационарен с высокой вероятностью и имеет степень интегрированности \texttt{I(0)}.
+%Если p = 1, то процесс имеет единичный корень, в этом случае ряд y(k) не стационарен, а степень интегрированности процесса равна 1. Степень интегрированности обозначается как I(1).
+
+%Если 0 < p < 1, то ряд стационарный и имеет степень интегрированости I(0)
+
+%Для финансово-экономических процессов значение p > 1 не свойственно, так как в этом случае процесс является "взрывным". Возникновение таких процессов маловероятно, так как финансово-экономическая среда достаточно инерционная, что не позволяет принимать бесконечно большие значения за малые промежутки времени.
+         
+\section{Построение ARIMA модели}
+
+Построим модель временного ряда общего числа смертей распространенным методом ARIMA (<<Autoregressive Integrated Moving Average>>, авторегрессия интегрированного скользящего среднего). Аргумент \texttt{order} отвечает за несезонную часть модели ARIMA. Он состоит из трёх значений -- (p, d, q), где p является порядком авторегрессионной модели (AR), d отвечает за степень интегрирования, а q -- за порядок модели скользящего среднего (MA). Таким образом, необходмо выбрать оптимальное значение параметра \texttt{order}. Для этого мы будем перебирать различные значения каждого из трех
+его компонентов. В этом нам поможет функция \texttt{AIC}. AIC (Akaike’s Information Criterion) -- информационный критерий Акаике. Это критерий, который позволяет сравнивать модели между собой. Чем меньше AIC, тем лучше модель.
+
+Для начала, проверим, соответствуют ли остатки модели <<белому шуму>> на модели с параметром \texttt{order} = (0,0,0) с помощью функции \texttt{tsdiag}:
+
+\begin{Schunk}
+\begin{Sinput}
+> tsdiag(arima(data, order = c(0,0,0)), 100)
+\end{Sinput}
+\end{Schunk}
+\includegraphics{test-007}
+
+Из графиков выше можно заметить, что остатки зависимы (это видно по ACF). p-value ниже уровня значимости, значит, неизвестно, являются ли остатки белым шумом.
+
+\subsection{Нахождения оптимальной модели}
+
+Найдём оптимальную модель:
+
+\begin{enumerate}
+\item Коэффициент MA:
+\begin{Schunk}
+\begin{Sinput}
+> mini = 100500
+> minInd = 0
+> first <- 0
+> for (m in 10:16)#должно быть 1:length(data)
++ {
++      mm <- arima(data, order=c(0,0,m))
++      cur = AIC(mm)
++      if(cur < mini){
++        minInd = m
++        mini = cur
++        first <- minInd
++      }
++ }
+\end{Sinput}
+\end{Schunk}
+
+MA-коэффицент получился равным 15:
+\begin{Schunk}
+\begin{Sinput}
+> first
+\end{Sinput}
+\begin{Soutput}
+[1] 15
+\end{Soutput}
+\end{Schunk}
+\item Коэффицент AR:
+\begin{Schunk}
+\begin{Sinput}
+> second <- 0
+> mini <- 100500
+> errCount <- 0
+> for (m in 9:13)
++ {
++   a <- try(arima(data, order=c(m,0,first)))
++   if(class(a) == "try-error"){ 
++     errCount <- errCount + 1
++     next
++   }
++   cur = AIC(a)
++   if(cur < mini){
++     minInd = m
++     mini = cur
++     second <- minInd
++   }
++ }
+\end{Sinput}
+\end{Schunk}
+AR-коэффицент получился равным 12:
+\begin{Schunk}
+\begin{Sinput}
+> second
+\end{Sinput}
+\begin{Soutput}
+[1] 11
+\end{Soutput}
+\end{Schunk}
+
+\item Найдём оптимальную модель:
+
+\begin{Schunk}
+\begin{Sinput}
+> mini <- 100500
+> errCount <- 0
+> third <- arima(data, order=c(second,0,first))
+> for (m in 3:5)
++ {
++   a <- try(arima(data, order=c(12,m,15)))
++   if(class(a) == "try-error"){ 
++     errCount <- errCount + 1
++     next
++   }
++   cur = AIC(a)
++   if(cur < mini){
++     minInd = m
++     mini = cur
++     third <- a
++   }
++ }
+\end{Sinput}
+\end{Schunk}
+
+\end{enumerate}
+
+Снова проверим, соответствуют ли остатки модели <<белому шуму>>:
+
+\begin{Schunk}
+\begin{Sinput}
+> tsdiag(third, 100)
+\end{Sinput}
+\end{Schunk}
+\includegraphics{test-013}
+
+Из графика видно, что остатки независисы (это видно по ACF). p-value гораздо больше уровня значимости, значит, остатки, с большой вероятностью, являются <<белым шумом>>. Значит, модель получилась хорошей.
+
+\subsection{Обработка полученных данных и прогноз}
+
+С помощью predict обработаем полученные данные. Полученные цифры прогноза:
+
+\begin{Schunk}
+\begin{Sinput}
+> predict(third, n.ahead = 12, se.fit = TRUE)$pred
+\end{Sinput}
+\begin{Soutput}
+           Jan       Feb       Mar       Apr       May       Jun       Jul
+1979  8121.523  7718.303  8197.107  8580.422  9526.644  9882.218 10937.174
+           Aug       Sep       Oct       Nov       Dec
+1979 10303.080  9602.219  9419.893  9157.032  9809.976
+\end{Soutput}
+\end{Schunk}
+
+На основании прогноза построим график с 1973 по 1979 годы:
+\begin{Schunk}
+\begin{Sinput}
+> plot(data, xlim=c(1973,1981), ylim=c(min(data)-10000,max(data)))
+> lines(predict(third, n.ahead=12, se.fit = TRUE)$pred, col="green")
+\end{Sinput}
+\end{Schunk}
+\includegraphics{test-015}
+
+Полученные цифры возможной ошибки:
+\begin{Schunk}
+\begin{Sinput}
+> predict(third, n.ahead = 12, se.fit = TRUE)$se
+\end{Sinput}
+\begin{Soutput}
+          Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
+1979 265.2952 326.6829 372.4956 436.9623 475.6924 517.4967 564.4794 585.3229
+          Sep      Oct      Nov      Dec
+1979 603.5406 645.0931 681.8046 736.2778
+\end{Soutput}
+\end{Schunk}
+
+Добавим на график верхние и нижние границы прогноза:
+
+\begin{Schunk}
+\begin{Sinput}
+> plot(data, xlim=c(1973,1980), ylim=c(min(data)-10000,max(data)))
+> lines(predict(third, n.ahead=12, se.fit = TRUE)$pred, col="green")
+> lines(predict(third, 
++               n.ahead=12, 
++               se.fit = TRUE)$se +
++       predict(third, n.ahead=12, se.fit = TRUE)$pred,
++       col="red")
+> lines(-predict(third, n.ahead=12, se.fit = TRUE)$se +
++        predict(third, n.ahead=12, se.fit = TRUE)$pred,
++        col="blue")
+\end{Sinput}
+\end{Schunk}
+\includegraphics{test-017}
+
+\section{Вывод}
+
+В ходе данной работы мы научились строить ARMA-модели и находить самые оптимальные из них, также, на основе полученной модели, мы научились строить прогнозы при помощи языка программировани R и инструмента R-studio из проекта R-project.
+\end{document}

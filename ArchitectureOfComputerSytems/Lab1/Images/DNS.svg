@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="15cm" height="18cm" viewBox="139 219 282 342" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="200" y="220" width="160" height="60"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="220" width="160" height="60"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="280" y="254.425">
+    <tspan x="280" y="254.425">Domain Name System</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="300" y1="360" x2="300" y2="292.005"/>
+    <polygon style="fill: #000000" points="305,292.005 300,282.005 295,292.005 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="305,292.005 300,282.005 295,292.005 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="260" y1="349" x2="260" y2="280"/>
+    <polygon style="fill: #000000" points="255,349 260,359 265,349 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="255,349 260,359 265,349 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="200" y="360" width="160" height="60"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="360" width="160" height="60"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="280" y="394.425">
+    <tspan x="280" y="394.425">IP адрес</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="300" y1="500" x2="300" y2="432.005"/>
+    <polygon style="fill: #000000" points="305,432.005 300,422.005 295,432.005 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="305,432.005 300,422.005 295,432.005 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="260" y1="489" x2="260" y2="421.005"/>
+    <polygon style="fill: #000000" points="255,489 260,499 265,489 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="255,489 260,499 265,489 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="200" y="500" width="160" height="60"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="500" width="160" height="60"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="280" y="534.238">
+    <tspan x="280" y="534.238">Физический адрес</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="320" y="300" width="100" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="320" y="300" width="100" height="40"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="370" y="324.425">
+    <tspan x="370" y="324.425">DNS служба</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="320" y="440" width="100" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="320" y="440" width="100" height="40"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="370" y="464.238">
+    <tspan x="370" y="464.238">ARP</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="140" y="440" width="100" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="140" y="440" width="100" height="40"/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="190" y="464.238">
+    <tspan x="190" y="464.238">RARP</tspan>
+  </text>
+</svg>
