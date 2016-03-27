@@ -1,0 +1,9 @@
+Realisation of GOST 28-147-89
+
+Read 64-bits blocks of data from stdin and return data to stdout.
+-e for encrypt
+-d for decrypt
+
+For example:
+echo "12345678" | ./gost -e | ./gost -d
+>> 12345678
