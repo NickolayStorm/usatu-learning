@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/icon_black_pawn.png</file>
+        <file>icons/black_bishop.png</file>
+        <file>icons/black_king.png</file>
+        <file>icons/black_knight.png</file>
+        <file>icons/black_pawn.png</file>
+        <file>icons/black_rook.png</file>
+        <file>icons/white_bishop.png</file>
+        <file>icons/white_king.png</file>
+        <file>icons/white_knight.png</file>
+        <file>icons/white_pawn.png</file>
+        <file>icons/white_queen.png</file>
+        <file>icons/white_rook.png</file>
+        <file>icons/black_queen.png</file>
+        <file>alloc01.png</file>
+        <file>authorization.qml</file>
+    </qresource>
+    <qresource prefix="/other">
+        <file>other/load.gif</file>
+        <file>other/ok.png</file>
+        <file>other/error.png</file>
+        <file>bg-chess.jpg</file>
+        <file>bg-chess.xcf</file>
+    </qresource>
+</RCC>

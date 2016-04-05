@@ -1,0 +1,12 @@
+BEGIN; --создает (начинает) транзакцию
+COMMIT; -- подтверждает
+ROLLBACK; --отменяет
+--Postgree автоматически обарачивает в BEGIN ... COMMIT (блок транзакции)
+SAVEPOINT my_savepoint --создает точку, к которрой можно ввернуться , если что-то не так, команда
+ROLLBACK TO my_savepoint
+
+SELECT * FROM tablename
+
+INSERT INTO tablename VALUES (...)
+
+DROP tablename WHERE s.city = 'Ufa'

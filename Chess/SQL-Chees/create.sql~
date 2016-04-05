@@ -1,0 +1,74 @@
+CREATE TABLE "player" (
+	"id"  SERIAL NOT NULL ,
+	"nick" VARCHAR(20) UNIQUE NOT NULL ,
+	"pas_hash" VARCHAR(20) NOT NULL ,
+	"reg_date" TIMESTAMP  DEFAULT NOW(),
+	"online" BOOLEAN DEFAULT FALSE, 
+		PRIMARY KEY ("id")
+);
+
+CREATE TABLE "piece" (
+	"id"  SERIAL NOT NULL ,
+	"name" VARCHAR(20) NOT NULL ,
+		PRIMARY KEY ("id")
+);
+
+CREATE TABLE "games" (
+	"id"  SERIAL NOT NULL ,
+	"player_1" INTEGER NOT NULL ,
+	"player_2" INTEGER NOT NULL ,
+	"complete" BOOLEAN NOT NULL ,
+	"start_time" TIMESTAMP NOT NULL ,
+		PRIMARY KEY ("id")
+);
+
+CREATE TABLE "message" (
+	"id_game" INTEGER NOT NULL ,
+	"id_player" INTEGER NOT NULL ,
+	"time" TIMESTAMP NOT NULL ,
+	"text" VARCHAR(200) NOT NULL ,
+		PRIMARY KEY ("id_game", "id_player", "time")
+);
+
+CREATE TABLE "cell" (
+	"id"  SERIAL NOT NULL ,
+	"a-h" SMALLINT NOT NULL ,
+	"1_8" SMALLINT NOT NULL ,
+		PRIMARY KEY ("id")
+);
+
+CREATE TABLE "piece_turn" (
+	"id"  SERIAL ,
+	"piece" INTEGER NOT NULL ,
+	"a-h" SMALLINT NOT NULL ,
+	"1_8" SMALLINT NOT NULL,
+	"ff" BOOLEAN ,
+		PRIMARY KEY ("id")
+);
+
+CREATE TABLE "game_turn" (
+	"id_game" INTEGER NOT NULL ,
+	"id_turn" INTEGER ,
+	"time" TIMESTAMP ,
+		PRIMARY KEY ("id_game", "time")
+);
+
+CREATE TABLE "state" (
+	"id_game" INTEGER NOT NULL ,
+	"id_cell" INTEGER NOT NULL ,
+	"id_piece" INTEGER ,
+	"isExist" BOOLEAN ,
+		PRIMARY KEY ("id_game", "id_cell", "id_piece")
+);
+
+ALTER TABLE "games" ADD FOREIGN KEY ("player_1") REFERENCES "player" ("id");
+ALTER TABLE "games" ADD FOREIGN KEY ("player_2") REFERENCES "player" ("id");
+ALTER TABLE "message" ADD FOREIGN KEY ("id_game") REFERENCES "games" ("id");
+
+ALTER TABLE "piece_turn" ADD FOREIGN KEY ("piece") REFERENCES "piece" ("id");
+
+ALTER TABLE "game_turn" ADD FOREIGN KEY ("id_game") REFERENCES "games" ("id");
+ALTER TABLE "game_turn" ADD FOREIGN KEY ("id_turn") REFERENCES "piece_turn" ("id");
+ALTER TABLE "state" ADD FOREIGN KEY ("id_game") REFERENCES "games" ("id");
+ALTER TABLE "state" ADD FOREIGN KEY ("id_cell") REFERENCES "cell" ("id");
+ALTER TABLE "state" ADD FOREIGN KEY ("id_piece") REFERENCES "piece" ("id");
