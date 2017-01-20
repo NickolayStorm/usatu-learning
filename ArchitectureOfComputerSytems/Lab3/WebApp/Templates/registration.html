@@ -1,0 +1,113 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style type="text/css">
+
+				form {	
+				 /* min-width: 260px; */
+					font: 600 13px Sans-serif;
+				}
+				fieldset, p {
+					margin: 0;
+					padding: 0;				
+				}
+				fieldset {
+					border: none;
+				}
+				fieldset.form, fieldset.button {
+					border-radius: 5px;
+				}
+				fieldset.form {
+					margin: 0;
+					padding: 20px 0px 32px 18px;
+					border: solid 1px #d7dcdd;
+				}
+				fieldset.info, fieldset.login {
+					margin-bottom: 24px;
+				}
+				p, label, input, legend {
+					font: 600 13px Sans-serif;
+				}
+				label {
+					width: 80px;
+					display: block;
+					padding: 5px 0;
+					float: left;
+					clear: left;
+				}
+				fieldset.info p {
+					margin-bottom: 10px;
+				}
+				fieldset.login p {
+					margin-bottom: 12px;
+				}
+				fieldset.form input {
+					width: 212px;	
+					margin-right: 5px;
+					padding: 3px;
+					border: solid 1px #c1c1c1;				
+				}
+				fieldset.captcha legend {
+					margin: 0 0 12px 0;
+					padding: 0;
+				}
+				fieldset.button {
+					margin: 7px 0 0;
+					padding: 0;
+					background: #e3e3e3;
+				}
+				input[type="image"] {
+					margin: 10px auto 5px 8%;
+				}	
+				/* Проверка на корректность введенных данных NOT IE */
+				span {
+					display: none;				
+				}
+				span.ok {				
+					color: #00a200;
+					font: 15px Sans-Serif;
+				}
+				input:valid ~ span.ok {
+					display: inline;
+				}
+				span.nook, span#bad_captcha {
+					color: #c00;
+				}	
+				span.nook {
+					font: 900 13px Sans-Serif;				
+				}
+				span#bad_captcha {
+					padding-left: 7px;
+				}
+				input:invalid ~ span.nook, input:invalid ~ span#bad_captcha {
+					display: inline;
+				}
+		</style>
+	
+		<script type="text/javascript">
+
+		</script>
+
+	</head>
+
+	<body>
+	{{.Error}}
+	<form method="post" action="registrate">
+				<fieldset class="login">
+					<label for="email">Логин</label><p class="input"><input type="login" name="email" id="email" required value="somename"><span class="ok">&#10003;</span><span class="nook">&#10005;</span></p>
+					<label for="password">Пароль</label><p class="input"><input type="password" name="password" id="password" maxlength="6" pattern="123456" required value="123456"></p> <!-- pattern="[^A-Za-z]+$"  - маска ввода пароля -->
+					<label for="re-password">Повторите</label><p class="input"><input type="password" name="re-password" id="re-password" pattern="123456" required value="123456"><span class="ok">&#10003;</span><span class="nook">&#10005;</span></p> <!-- pattern="[^A-Za-z1-9]+$"  - маска ввода пароля -->
+				</fieldset>
+				<fieldset class="captcha">
+					<legend>Введите число с картинки</legend>
+					<label for="captcha"><img src="http://savepic.su/5825964.jpg" alt="captcha"></label><p class="field"><input name="captcha" id="captcha" pattern ="55102" required value="55102"><span class="ok">&#10003;</span><span class="nook">&#10005;</span><span id="bad_captcha">Неправильное число</span></p>
+				</fieldset>
+			</fieldset>
+			<fieldset class="button">
+				<form method="post" action="registrate">
+					<input type="image" src="http://savepic.ru/7509607.png" alt="Зарегистрироваться">
+				</form>
+			</fieldset>
+		</form>
+	</body>
+</html>

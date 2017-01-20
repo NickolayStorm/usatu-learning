@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Администрирование пользователей</title>
+	<meta charset="utf-8" />
+
+</head>
+<body>
+	<table>
+		<tr>
+			<td>
+				id
+			</td>
+			<td>
+				Name				
+			</td>
+			<td>
+				Permission				
+			</td>
+			<td>
+				Key
+			</td>
+			<td>
+				Date				
+			</td>
+			<td>
+				Action
+			</td>
+		</tr>
+		<!-- Users -->
+		{{range $post := .Posts}}
+		<tr>
+			<td>
+				{{$post.Id}}
+			</td>
+			<td>
+				{{$post.Autor}}				
+			</td>
+			<td>
+				{{$post.Title}}			
+			</td>
+			<td>
+				{{$post.Text}}
+			</td>
+			<td>
+				{{$post.Time}}		
+			</td>
+			<td>
+				<a href="/remove_user/{{$post.Id}}" class="button">Remove</a>
+			</td>
+		</tr>
+		{{end}}
+	</table>
+
+</body>
+</html>

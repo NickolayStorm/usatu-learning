@@ -76,6 +76,7 @@ class DimensionalView(QWidget):
         mtx = mtx * TransformationMatrix.transfer(self.x0, self.y0, 0)
 
         self.transformation_matrix = mtx
+        print("THIS IS IT:\n", self.transformation_matrix)
 
     # Преобразование точки трёхмерного пространства
     # в точку двумерного пространства.
